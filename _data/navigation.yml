@@ -1,0 +1,13 @@
+# main links links
+main:
+  - title: "Home"
+    url: /
+        
+  - title: "Blog"
+    url: /blog/
+    
+  - title: "Exploits"
+    url: /exploits/
+
+  - title: "Bug Bounty"
+    url: /bugbounty
