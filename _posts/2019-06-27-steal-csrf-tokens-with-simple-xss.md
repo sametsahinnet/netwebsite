@@ -16,7 +16,7 @@ tags:
 excerpt: 'Steal CSRF Tokens with simple XSS'
 ---
 
-Merhaba,
+Merhaba,  
 Ben Samet ŞAHİN.  
 İki yıldan biraz uzun süredir *Bug Bounty* ile ve toplamda yaklaşık dört yıldır da *Web Uygulama Güvenliği* alanında çalışmalar yürütmekteyim. 
 
