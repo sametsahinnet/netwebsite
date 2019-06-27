@@ -22,7 +22,7 @@ Work experience
   - Web Application Security Researcher (Bug Hunter)
 
 
-* Mary 2017 ~ : Bugcrowd [Profile](https://bugcrowd.com/samet)
+* May 2017 ~ : Bugcrowd [Profile](https://bugcrowd.com/samet)
   - Web Application Security Researcher (Bug Hunter)
 
 
