@@ -1,6 +1,6 @@
 ---
 title: 'TR \| Steal CSRF Tokens with simple XSS'
-date: 2018-06-12
+date: 2019-06-27
 permalink: /posts/steal-csrf-tokens-with-simple-xss/
 tags:
   - xss
