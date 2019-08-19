@@ -11,11 +11,14 @@ tags:
   - Samet ŞAHİN
 excerpt: 'Interviews'
 ---
+**Listelist :**  
+[https://listelist.com/samet-sahin-kimdir-bug-bounty/](https://listelist.com/samet-sahin-kimdir-bug-bounty/)
 
-[**Listelist :**](https://listelist.com/samet-sahin-kimdir-bug-bounty/)
+**Ceotudent :**  
+[https://ceotudent.com/dunya-devi-sirketlerin-yazilim-hatalarini-bulan-samet-sahin](https://ceotudent.com/dunya-devi-sirketlerin-yazilim-hatalarini-bulan-samet-sahin)
 
-[**Ceotudent :**](https://ceotudent.com/dunya-devi-sirketlerin-yazilim-hatalarini-bulan-samet-sahin)
+**Siberbülten :**  
+[https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/](https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/)
 
-[**Siberbülten :**](https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/)
 
 
