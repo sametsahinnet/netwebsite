@@ -31,7 +31,7 @@ Ufak bir trickten sonra açığımıza geri dönelim. Kaynak kodunu okumuş ve "
 
 <img src="/images/LinkInjectionBlogPost2.png">  
 
-Yukarıdaki URL adresini ziyaret ediyoruz ve CTRL-U kombinasyonuyla kaynak koduna giriyoruz. Ardından da CTRL-F ile "sametsahin" değerini aratıyoruz. Gördüğümüz kadarıyla "sametsahin" değeri tam 63 farklı yerde ve farklı şekillerde yansımış. Birazdan bu farklı yansıma şekillerinden bir tanesini kullanarak "Medium 6.3" değerinde bir Cross Site Scripting (XSS) açığı elde edeceğiz. 
+Yukarıdaki URL adresini ziyaret ediyoruz ve CTRL-U kombinasyonuyla kaynak koduna giriyoruz. Ardından da CTRL-F ile "sametsahin" değerini aratıyoruz. Gördüğümüz kadarıyla "sametsahin" değeri tam 63 farklı yerde ve farklı şekillerde yansımış. Birazdan bu farklı yansıma şekillerinden bir tanesini kullanarak "Medium 5.4" değerinde bir Cross Site Scripting (XSS) açığı elde edeceğiz. 
 
 Yukarıdaki resimde HTML ve JavaScript için hayati önem arz eden `<script>` etiketine "sametsahin" değerinin basıldığını ve sonuna da /javascript.js dosyasının otomatik olarak eklendiğini görüyoruz. Bu ne anlama geliyor ? Nasıl bozarım ?
 
@@ -68,6 +68,10 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 3- > CSRF Korumalarını bypass edebilir veya CSRF Tokenlerini çalabilirdik.  
 4 -> Websitesinde sahte formlar oluşturup Email, Telefon, Adres, Kimlik ve Parola gibi hassas verileri çalabilirdik.  
 ....  
+
+
+**HackerOne Raporu ?**  
+<img src="/images/LinkInjectionBlogPost5.png">  
 
 
 
