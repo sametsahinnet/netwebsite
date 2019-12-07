@@ -67,7 +67,8 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 
 Normal bir XSS açığında saldırı senaryosu geniştir ama bu tür JavaScript dosyası dahil edilebilen tür XSS açıklarında zararlı kodunuzu dilediğiniz kadar uzun yazabildiğiniz için oldukça tehlikelidir. 
 
-Ve tüm bu işlemlerin ardından ortaya çıkardığım orijinal bir #BugBountyTip : Even a Simple Link Injection can be very harmful. Depends on where it is. 
+Ve tüm bu işlemlerin ardından ortaya çıkardığım orijinal bir #BugBountyTip : 
+> **Even a Simple Link Injection can be very harmful. Depends on where it is.**
 
 
 Samet ŞAHİN
