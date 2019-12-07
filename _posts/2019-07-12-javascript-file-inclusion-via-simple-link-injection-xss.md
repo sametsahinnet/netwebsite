@@ -1,6 +1,6 @@
 ---
 title: 'TR \| Javascript File Inclusion via a Simple Link Injection'
-date: 2018-06-12
+date: 2019-07-12
 permalink: /posts/javascript-file-inclusion-via-simple-link-injection-xss/
 tags:
   - xss
@@ -29,7 +29,7 @@ Yani buradan bir #bugbountytip çıkarak olursak : "Sitenin ne işe yaradığın
 Ufak bir trickten sonra açığımıza geri dönelim. Kaynak kodunu okumuş ve "context" isimli bir girdi etiketinin varlığını anlamıştık. Şimdi eğer daha önce çok eski sitelere **Recognize** veya **Hacking** uyguladıysanız sitenin gerçekten çalışıp çalışmadığını kontrol etmelisiniz. Hadi gelin kontrol edelim. Link'in sonunda `?context=sametsahin` yazıyorum ve kaynak koduna nerelere ve nasıl yansıdığını inceliyorum.
 > URL : https://127.0.0.1/blablabla/index.html?context=sametsahin  
 
-<img src="/images/LinkInjectionBlogPost2.png">  
+<img src="/images/LinkInjectionBlogPost2.PNG">  
 
 Yukarıdaki URL adresini ziyaret ediyoruz ve CTRL-U kombinasyonuyla kaynak koduna giriyoruz. Ardından da CTRL-F ile "sametsahin" değerini aratıyoruz. Gördüğümüz kadarıyla "sametsahin" değeri tam 63 farklı yerde ve farklı şekillerde yansımış. Birazdan bu farklı yansıma şekillerinden bir tanesini kullanarak "Medium 5.4" değerinde bir Cross Site Scripting (XSS) açığı elde edeceğiz. 
 
