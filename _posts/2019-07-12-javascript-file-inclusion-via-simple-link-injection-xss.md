@@ -1,6 +1,6 @@
 ---
 title: 'TR \| Javascript File Inclusion via a Simple Link Injection'
-date: 2019-07-12
+date: 2018-06-12
 permalink: /posts/javascript-file-inclusion-via-simple-link-injection-xss/
 tags:
   - xss
@@ -19,7 +19,7 @@ excerpt: 'Javascript File Inclusion (XSS) via a Simple Link Injection'
 Merhaba arkadaşlar, ben Samet ŞAHİN.
 
 HackerOne (https://hackerone.com/) üzerindeki bir gizli (private) programa **Recognize** yaparken HTTP servisini kullanan bir IP adresi buldum. Bulduğum IP adresine girince direkt olarak bir index sayfasına yönlendiriyordu. Bu index sayfasının kaynak kodlarını (CTRL-U) okurken GET yöntemiyle değer alan bir `<form>` etiketi gördüm ve içerdiği `<input>` etiketlerinden "context" parametresinden değer aldığını fark ettim. 
-<img src="/images/LinkInjectionBlogPost.png">
+<img src="/images/LinkInjectionBlogPost.PNG">
 
 Sıradan bir XSS araştırmasında tüm girdilere (input) XSS saldırı kodları (payload) girmeyi elbette deneyebilirsiniz. Evet XSS böyle de bulunur AMA kaynak kodunu okumayıp, fonksiyonların nasıl çalıştığını ve ne işe yaradığını anlamadan **hacking** denediğiniz anda otomatize araçlardan pek de bir farkınız kalmayacaktır. Fonksiyonların nasıl çalıştığını ve ne işe yaradığını anlamak da Bug Bounty alanında iyi çalışmalar yapan kişilerden aldığım önerilerden biridir. 
 
@@ -33,7 +33,9 @@ Yukarıdaki URL adresini ziyaret ediyoruz ve CTRL-U kombinasyonuyla kaynak kodun
 
 Yukarıdaki resimde HTML ve JavaScript için hayati önem arz eden `<script>` etiketine "sametsahin" değerinin basıldığını ve sonuna da /javascript.js dosyasının otomatik olarak eklendiğini görüyoruz. Bu ne anlama geliyor ? Nasıl bozarım ?
 
-> Bu, websitesinin "context" parametresinden aldığı değeri direkt olarak `<script>` etiketinin başına eklediğini ve değerin hemen sonuna da javascript.js dosyasını alarak çalıştığını anlıyoruz.
+> Bu, websitesinin "context" parametresinden aldığı değeri direkt olarak `<script>` etiketinin başına eklediğini ve değerin hemen sonuna da javascript.js dosyasını alarak çalıştığını anlıyoruz.  
+
+
 > Eğer benden aldığı değeri direkt olarak `<script>` etiketinin içine yerleştiriyor ise ben bu değeri bir kontrolümdeki site adresiyle değiştirip o sitedeki /javascript.js dosyasının içeriğini zararlı kodlar (payload) ile doldurarak XSS açığına erişebilirim.
 
 Bu durumda XSS açığına sebep olan URL adresimiz şu şekilde gözükecektir.
@@ -45,20 +47,23 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 
 
 **Peki neler yaptık ?**
-1 -> Recognize ile bir HTTP uygulaması ve bir klasöre eriştik.
-2 -> Eriştiğimiz klasördeki index dosyasının kaynak kodunu okuduk.
-3 -> Kaynak kodunu okurken "context" isimli bir parametre olduğunug gördük.
-4 -> "Context" parametresinin nerelere ve nasıl yansıdığını tespit ettik.
-5 -> Kendimize bazı sorular sorduk.
-6 -> Kontrolümüzdeki bir websitesiyle değiştirdik ve "context" parametresine yazdık
-7 -> Basit bir Link Injection'dan yola çıkarak en iyisinden bir Cross Site Scripting açığı elde ettik.
+1 -> Recognize ile bir HTTP uygulaması ve bir klasöre eriştik.  
+2 -> Eriştiğimiz klasördeki index dosyasının kaynak kodunu okuduk.  
+3 -> Kaynak kodunu okurken "context" isimli bir parametre olduğunug gördük.  
+4 -> "Context" parametresinin nerelere ve nasıl yansıdığını tespit ettik.  
+5 -> Kendimize bazı sorular sorduk.  
+6 -> Kontrolümüzdeki bir websitesiyle değiştirdik ve "context" parametresine yazdık.  
+7 -> Basit bir Link Injection'dan yola çıkarak en iyisinden bir Cross Site Scripting açığı elde ettik.  
+
 
 **Peki bu Cross Site Scripting ile neler yapılabilirdi ?**
-1 -> Kullanıcı Cookie'leri çalınıp kullanıcı hesabına erişilebilirdik.
-2 -> Kullanıcıyı zararlı websitelerine yönlendirebilirdik.
-3- > CSRF Korumalarını bypass edebilir veya CSRF Tokenlerini çalabilirdik.
-4 -> Websitesinde sahte formlar oluşturup Email, Telefon, Adres, Kimlik ve Parola gibi hassas verileri çalabilirdik.
-....
+1 -> Kullanıcı Cookie'leri çalınıp kullanıcı hesabına erişilebilirdik.  
+2 -> Kullanıcıyı zararlı websitelerine yönlendirebilirdik.  
+3- > CSRF Korumalarını bypass edebilir veya CSRF Tokenlerini çalabilirdik.  
+4 -> Websitesinde sahte formlar oluşturup Email, Telefon, Adres, Kimlik ve Parola gibi hassas verileri çalabilirdik.  
+....  
+
+
 
 Normal bir XSS açığında saldırı senaryosu geniştir ama bu tür JavaScript dosyası dahil edilebilen tür XSS açıklarında zararlı kodunuzu dilediğiniz kadar uzun yazabildiğiniz için oldukça tehlikelidir. 
 
