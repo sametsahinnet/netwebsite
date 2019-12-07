@@ -46,7 +46,7 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 <img src="/images/LinkInjectionBlogPost4.png">
 
 
-**Peki neler yaptık ?**
+**Peki neler yaptık ?**  
 1 -> Recognize ile bir HTTP uygulaması ve bir klasöre eriştik.  
 2 -> Eriştiğimiz klasördeki index dosyasının kaynak kodunu okuduk.  
 3 -> Kaynak kodunu okurken "context" isimli bir parametre olduğunug gördük.  
@@ -56,7 +56,7 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 7 -> Basit bir Link Injection'dan yola çıkarak en iyisinden bir Cross Site Scripting açığı elde ettik.  
 
 
-**Peki bu Cross Site Scripting ile neler yapılabilirdi ?**
+**Peki bu Cross Site Scripting ile neler yapılabilirdi ?**  
 1 -> Kullanıcı Cookie'leri çalınıp kullanıcı hesabına erişilebilirdik.  
 2 -> Kullanıcıyı zararlı websitelerine yönlendirebilirdik.  
 3- > CSRF Korumalarını bypass edebilir veya CSRF Tokenlerini çalabilirdik.  
