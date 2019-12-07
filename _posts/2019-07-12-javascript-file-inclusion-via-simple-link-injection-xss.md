@@ -80,5 +80,6 @@ Normal bir XSS açığında saldırı senaryosu geniştir ama bu tür JavaScript
 Ve tüm bu işlemlerin ardından ortaya çıkardığım orijinal bir #BugBountyTip : 
 > **Even a Simple Link Injection can be very harmful. Depends on where it is.**
 
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Here is a blog and trick about : &quot;Javascript File Inclusion via a Simple Link Injection&quot;<a href="https://twitter.com/hashtag/bugbountytip?src=hash&amp;ref_src=twsrc%5Etfw">#bugbountytip</a> : Even a Simple Link Injection can be very harmful. Depends on where it is.<a href="https://t.co/TcOpslYuvE">https://t.co/TcOpslYuvE</a> <a href="https://t.co/ks5NJDD3ss">pic.twitter.com/ks5NJDD3ss</a></p>&mdash; Samet ŞAHİN (@sametsahinnet) <a href="https://twitter.com/sametsahinnet/status/1203377220871430144?ref_src=twsrc%5Etfw">December 7, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 Samet ŞAHİN
