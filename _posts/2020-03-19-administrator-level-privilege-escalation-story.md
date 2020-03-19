@@ -25,7 +25,7 @@ The most important step to finding a privilege escalation is understanding to â€
 There is only one tip. 
 Read the field manual. (documentation)
 
-<img src="/images/PrivEsc-BlogPost-1.png">  
+<img src="/images/PrivEsc-BlogPost-1.PNG">  
 
 
 ### Finding Story
@@ -39,7 +39,7 @@ https://PRIVATE-PROGRAM.ext/me path and saw `whoami` code snippet in source-code
 {"role":"administrator","user_type_id":1,"level":"userlevel10","model":"BillRate","allow_create":"all","allow_read":"all","allow_update":"all","allow_destroy":"all"},
 {"role":"team_member","user_type_id":3,"level":"userlevel30","model":"BillRate","allow_create":"none","allow_read":"none","allow_update":"none","allow_destroy":"none"}`
 
-<img src="/images/PrivEsc-BlogPost-3.png">  
+<img src="/images/PrivEsc-BlogPost-3.PNG">  
 
 This is a very good reference to find a privilege escalation, right? 
 
@@ -93,4 +93,4 @@ We have an administrator-level privilege escalation now...
 
 ### The end : 
 But it is duplicate.
-<img src="/images/PrivEsc-BlogPost-2.png">  
+<img src="/images/PrivEsc-BlogPost-2.PNG">  
