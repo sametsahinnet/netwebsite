@@ -21,7 +21,8 @@ excerpt: 'TR \| Interviews'
 [https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/](https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/)
 
 **Turkish National Broadcast (TRT) Radio 1 - Dijital Hayat**  
-https://www.youtube.com/watch?v=A_UF4_rOB_U
+[https://www.youtube.com/watch?v=A_UF4_rOB_U](https://www.youtube.com/watch?v=A_UF4_rOB_U
+)
 
 
 
