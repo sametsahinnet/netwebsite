@@ -1,5 +1,5 @@
 ---
-title: 'Interviews'
+title: 'TR | Interviews'
 date: 2018-01-01
 permalink: /posts/interviews/
 tags:
@@ -9,7 +9,7 @@ tags:
   - şahin
   - samet
   - Samet ŞAHİN
-excerpt: 'Interviews'
+excerpt: 'TR | Interviews'
 ---
 **Listelist :**  
 [https://listelist.com/samet-sahin-kimdir-bug-bounty/](https://listelist.com/samet-sahin-kimdir-bug-bounty/)
@@ -19,6 +19,9 @@ excerpt: 'Interviews'
 
 **Siberbülten :**  
 [https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/](https://siberbulten.com/sektorel/trky/dev-sirketleri-dize-getiren-genc-isim-sahin-okulda-gizli-kalmayi-tercih-ediyor/)
+
+**Turkish National Broadcast (TRT) Radio 1 - Dijital Hayat**
+https://www.youtube.com/watch?v=A_UF4_rOB_U
 
 
 
