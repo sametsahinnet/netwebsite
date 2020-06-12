@@ -11,7 +11,7 @@ redirect_from:
 
 Education
 ======
-* Fethiye Kemal Mumcu Anatolian Highschool, 2017~
+* Fethiye Kemal Mumcu Anatolian Highschool, 2017\~still (Ankara, Turkey)
 
 
 
@@ -46,18 +46,18 @@ Skills
   * Web Application Security
 
 **Languages**
-* BASH
-* HTML
-* PHP (Beginner)
-* JS (Beginner)
-
-**OS**
-* Linux 
-  * Kali
-  * Backbox
-* Windows
+* PHP 
+* JS 
+* PYTHON
 
 
+Talks
+======
+* Bug Bounty 101 at Bilkent University (2018)
+* CRLF Injection at TOBB Education and Technology University (2019)
+* Bug Bounty Felsefesi ve Dünyada Bug Bounty at TOBB Education and Technology University (2019)
+* Bug Bounty ve Web Uygulama Güvenliği at BTK (Hacknights) (2019)
+* Introduction to Bug Bounty at Cankaya University (2019)  
 
 
   
