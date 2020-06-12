@@ -1,7 +1,7 @@
 ---
-title: 'TR \| Steal CSRF Tokens with simple XSS'
+title: 'TR \| Steal CSRF Tokens with an XSS'
 date: 2019-06-27
-permalink: /posts/steal-csrf-tokens-with-simple-xss/
+permalink: /posts/steal-csrf-tokens-with-an-xss/
 tags:
   - xss
   - hack
@@ -13,7 +13,7 @@ tags:
   - write-up
   - poc
   - vulnerability
-excerpt: 'Steal CSRF Tokens with simple XSS'
+excerpt: 'Steal CSRF Tokens with an XSS'
 ---
 
 Merhaba,  
