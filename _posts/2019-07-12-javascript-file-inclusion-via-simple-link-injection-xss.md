@@ -53,12 +53,12 @@ Ve URL adresine kullanıcıya tıklattırdığımda kullanıcı tarayıcısında
 
 
 **Peki neler yaptık ?**  
-1 -> Recognize ile bir HTTP uygulaması ve bir klasöre eriştik.  
+1 -> *Recon* ile bir HTTP uygulaması ve bir klasöre eriştik.  
 2 -> Eriştiğimiz klasördeki index dosyasının kaynak kodunu okuduk.  
-3 -> Kaynak kodunu okurken "context" isimli bir parametre olduğunug gördük.  
+3 -> Kaynak kodunu okurken "context" isimli bir parametre olduğunu gördük.  
 4 -> "Context" parametresinin nerelere ve nasıl yansıdığını tespit ettik.  
-5 -> Kendimize bazı sorular sorduk.  
-6 -> Kontrolümüzdeki bir websitesiyle değiştirdik ve "context" parametresine yazdık.  
+5 -> Kendimize bazı sorular sorduk. (Hacker Mindset)  
+6 -> Kontrolümüzdeki bir websitesiyle değiştirdik ve değeri "context" parametresine yazdık.  
 7 -> Basit bir Link Injection'dan yola çıkarak en iyisinden bir Cross Site Scripting açığı elde ettik.  
 
 
