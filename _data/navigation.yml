@@ -8,6 +8,3 @@ main:
     
   - title: "Exploits"
     url: /exploits/
-
-  - title: "Bug Bounty"
-    url: /bugbounty
