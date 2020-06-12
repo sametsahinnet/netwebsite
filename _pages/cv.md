@@ -47,8 +47,8 @@ Skills
 
 **Languages**
 * PHP 
-* JS 
-* PYTHON
+* JavaScript 
+* Python
 
 
 Talks
