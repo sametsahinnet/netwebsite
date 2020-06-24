@@ -5,10 +5,6 @@ permalink: /sitemap/
 author_profile: true
 ---
 
-<head>
-   <meta http-equiv="refresh"
-   content="0; url=https://samet.ninja">
-</head>
 
 {% include base_path %}
 
