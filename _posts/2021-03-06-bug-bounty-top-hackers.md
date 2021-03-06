@@ -11,7 +11,7 @@ tags:
   - best bug hunters
   - top bug hunters
   - bugbounty pro
-excerpt: 'Bug Bounty: What do the top bug hunters find? A simple analysis of public HackerOne reviews.'
+excerpt: 'Bug Bounty: What do the top bug hunters find? An analysis of public HackerOne reviews.'
 ---
 
 <style type="text/css">
