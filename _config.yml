@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "Samet SAHIN"
 title_separator          : ">"
 name                     : &name "Samet SAHIN"
-description              : &description "17 y/o Bug Hunter | Web Application Security Researcher"
+description              : &description "Bug Hunter | Web Application Security Researcher"
 url                      : #https://sametsahin.net #https://academicpages.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : #"" # the subpath of your site, e.g. "/blog"
 repository               : sametsahinnet/netwebsite #"academicpages/academicpages.github.io"
@@ -82,7 +82,7 @@ analytics:
 author:
   name             : "Samet SAHIN"
   avatar           : "pp.jpeg"
-  bio              : "17 y/o Bug Hunter | Web Application Security Researcher"
+  bio              : "Bug Hunter | Web Application Security Researcher"
   location         : "Turkey"
   employer         :
   googlescholar    : #"https://yourfullgooglescholarurl.com"
