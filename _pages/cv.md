@@ -31,7 +31,8 @@ Volunteering Experience
 ======
 * September 2018 ~ :  [Exploit Studio](http://exploit.studio/)
   - Team Member
-
+* February 2021 ~ :  [findhunters](https://findhunters.com/)
+  - Creator
 
 
 
@@ -46,12 +47,12 @@ Skills
   * Web Application Security
 
 **Languages**
-* PHP 
+* Flask 
 * JavaScript 
-* Python
 
 
-Talks
+
+Given Talks
 ======
 * Bug Bounty 101 at Bilkent University (2018)
 * CRLF Injection at TOBB Education and Technology University (2019)
